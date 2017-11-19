@@ -1,21 +1,15 @@
 package com.example.pauline.myvocabulary;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Display;
-import android.widget.Toast;
+
+import com.example.pauline.myvocabulary.model.AllLists;
+import com.example.pauline.myvocabulary.model.ListWord;
+import com.example.pauline.myvocabulary.model.Word;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,12 +19,17 @@ import java.io.OutputStreamWriter;
  * Created by pauline on 07/11/2017.
  */
 
-public class FileClass{
+public class FileManager {
 
-    private static final String TAG = FileClass.class.getName();
+    private static final String TAG = FileManager.class.getName();
     private static final String FILENAME = "words.csv";
-    AllLists lists = new AllLists();
+    AllLists allLists = new AllLists();
 
+    /**
+     *  Writes the data from the classes AllLists, ListWord and Word in the csv file
+     * @param data
+     * @param context
+     */
     public void writeToFile(String data, Context context) {
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(FILENAME, Context.MODE_APPEND));
@@ -42,7 +41,11 @@ public class FileClass{
         }
     }
 
-
+    /**
+     *  Reads the csv file. Add the data in the classes AllLists, ListWord and Word
+     * @param context
+     * @return
+     */
     public String readFromFile(Context context) {
         String ret = "";
 
@@ -58,25 +61,25 @@ public class FileClass{
                 while ((receiveString = bufferedReader.readLine()) != null) {
 
                     String[] wordFile = receiveString.split(";");
-                    Word word = new Word(wordFile[1], wordFile[2], 0, 0);
+                    Word word = new Word(wordFile[1], wordFile[2]);
 
 
-                    if (!lists.lists.isEmpty()) {
+                    if (!allLists.lists.isEmpty()) {
                         boolean newList = false;
                         int i = 0;
 
-                        while (i < lists.lists.size() && !newList) {
-                            if (lists.lists.get(i).getName().equals(wordFile[0])) {
+                        while (i < allLists.lists.size() && !newList) {
+                            if (allLists.lists.get(i).getName().equals(wordFile[0])) {
                                 newList = true;
                             } else {
                                 i++;
                             }
                         }
 
-                        if (newList == false) {
+                        if (!newList) {
                             addNewListWithWord(wordFile[0], word);
                         } else {
-                            lists.lists.get(i).addWord(word);
+                            allLists.lists.get(i).addWord(word);
                         }
                     } else {
                         addNewListWithWord(wordFile[0], word);
@@ -96,14 +99,14 @@ public class FileClass{
         return ret;
     }
 
-    public AllLists RecupAllLists() {
-        return lists;
+    public AllLists getAllLists() {
+        return allLists;
     }
 
     public void addNewListWithWord(String newList, Word newWord) {
         ListWord list = new ListWord(newList);
         list.addWord(newWord);
-        lists.addList(list);
+        allLists.addList(list);
     }
 
 }

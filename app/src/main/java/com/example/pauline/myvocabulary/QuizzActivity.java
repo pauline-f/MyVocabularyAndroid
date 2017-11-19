@@ -10,6 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.pauline.myvocabulary.model.AllLists;
+import com.example.pauline.myvocabulary.model.ListWord;
+import com.example.pauline.myvocabulary.model.Quizz;
+import com.example.pauline.myvocabulary.model.QuizzFactory;
+
 import java.util.Vector;
 
 public class QuizzActivity extends AppCompatActivity {
@@ -21,26 +26,16 @@ public class QuizzActivity extends AppCompatActivity {
     String valueSpinnerQuizz;
 
     AllLists allLists = new AllLists();
-    FileClass file = new FileClass();
+    FileManager file = new FileManager();
     Vector choices = new Vector<String>();
     String[] quizzes = {"QuizzWordTranslation", "QuizzTranslationWord"};
-    Quizz quizz = new Quizz() {
-        @Override
-        public String displayWord() {
-            return null;
-        }
+    Quizz quizz;
 
-        @Override
-        public boolean isGoodAnswer(String input) {
-            return false;
-        }
-
-        @Override
-        public String getGoodAnswer() {
-            return null;
-        }
-    };
-
+    /**
+     *  Adds the names of the list of words in the spinnerList.
+     *  Adds the 2 quizzes in the spinnerQuizz.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,40 +43,38 @@ public class QuizzActivity extends AppCompatActivity {
 
         file.readFromFile(this);
 
-        allLists = file.RecupAllLists();
+        allLists = file.getAllLists();
 
         for (int i = 0; i < allLists.countLists(); i++) {
             String name = allLists.lists.get(i).getName();
             choices.add(name);
         }
 
-        //Spinner list
         spinnerList = findViewById(R.id.allLists);
         adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerList.setAdapter(adapter);
 
-        //Spinner Quizz
         spinnerQuizz = findViewById(R.id.allQuizz);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, this.quizzes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerQuizz.setAdapter(adapter);
     }
 
+    /**
+     *  Allows to play a quizz based on the list and the quizz type selected
+     * @param view
+     */
     public void playQuizz(View view) {
 
-        //Value spinner list
         valueSpinnerList = (String) spinnerList.getItemAtPosition(spinnerList.getSelectedItemPosition());
-
-        //Value spinner quizz
         valueSpinnerQuizz = (String) spinnerQuizz.getItemAtPosition(spinnerQuizz.getSelectedItemPosition());
 
         ListWord listWord = allLists.findAList(valueSpinnerList);
 
-
-        if (listWord != null || valueSpinnerQuizz == "") {
+        if (listWord != null && !valueSpinnerQuizz.isEmpty()) {
             quizz = QuizzFactory.getQuizz(valueSpinnerQuizz, listWord);
-            quizz(quizz);
+            startQuizz(quizz);
             LinearLayout layout = findViewById(R.id.layoutPlay);
             layout.setVisibility(View.VISIBLE);
         }
@@ -90,27 +83,30 @@ public class QuizzActivity extends AppCompatActivity {
         }
     }
 
-
-    public void quizz(Quizz quizz) {
+    /**
+     * Displays the word for the quizz
+     * @param quizz
+     */
+    public void startQuizz(Quizz quizz) {
         String wordQuizz = quizz.displayWord();
-        //Display the word
         EditText question = findViewById(R.id.question);
         question.setText(wordQuizz);
     }
 
-
+    /**
+     *  Checks if the word is right
+     * @param view
+     */
     public void checkWord(View view) {
         EditText answer = findViewById(R.id.answer);
         String valueAnswer = answer.getText().toString().trim().toLowerCase();
         if (quizz.isGoodAnswer(valueAnswer)) {
-            //Toast.makeText(getApplicationContext(), "Good answer!", Toast.LENGTH_SHORT).show();
             displayAlert("Good answer!");
         } else {
-            //Toast.makeText(getApplicationContext(), "The answer was: " + quizz.getGoodAnswer(), Toast.LENGTH_SHORT).show();
             displayAlert("The answer was: " + quizz.getGoodAnswer());
         }
         answer.setText("");
-        quizz(quizz);
+        startQuizz(quizz);
     }
 
     public void displayAlert(String message) {

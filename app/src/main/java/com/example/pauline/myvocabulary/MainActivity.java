@@ -5,10 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 public class MainActivity extends AppCompatActivity {
-    FileClass file = new FileClass();
+    FileManager file = new FileManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
         String fileData = file.readFromFile(this);
         Log.d("data", fileData);
     }
-
 
     public void displayWordActivity(View view) {
         Intent intent = new Intent(this, DisplayListActivity.class);

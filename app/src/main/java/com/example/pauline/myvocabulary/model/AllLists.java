@@ -1,4 +1,4 @@
-package com.example.pauline.myvocabulary;
+package com.example.pauline.myvocabulary.model;
 
 import java.util.ArrayList;
 /**

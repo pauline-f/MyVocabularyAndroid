@@ -13,14 +13,16 @@ import java.util.ArrayList;
  * Created by pauline on 14/11/2017.
  */
 
+/**
+ *  Allows to have 2 columns in the listView to display the word and the translation
+ */
+
 class CustomAdapter extends BaseAdapter {
-    Context context;
-    ArrayList<String> words;
-    ArrayList<String > translations;
-    LayoutInflater inflater;
+    private ArrayList<String> words;
+    private ArrayList<String > translations;
+    private LayoutInflater inflater;
 
     public CustomAdapter (Context context, ArrayList<String> words, ArrayList<String> translations) {
-        this.context = context;
         this.words = words;
         this.translations = translations;
         inflater = (LayoutInflater.from(context));
@@ -43,7 +45,7 @@ class CustomAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.activity_list_view, null);
+        view = inflater.inflate(R.layout.display_word, null);
         TextView textWords = (TextView) view.findViewById(R.id.textView);
         TextView textTranslation = (TextView) view.findViewById(R.id.translationView);
         textWords.setText(words.get(i));

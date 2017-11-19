@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
+
+import com.example.pauline.myvocabulary.model.AllLists;
+import com.example.pauline.myvocabulary.model.ListWord;
+import com.example.pauline.myvocabulary.model.Word;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -16,12 +18,11 @@ import java.util.Vector;
 public class DisplayListActivity extends AppCompatActivity {
 
     ArrayAdapter<String> adapter;
-    ArrayAdapter<String> adapter2;
     Spinner spinner;
 
     AllLists allLists = new AllLists();
     ListWord list;
-    FileClass file = new FileClass();
+    FileManager file = new FileManager();
     Vector choices = new Vector<String>();
     String valueSpinner;
     ListView listView;
@@ -34,62 +35,63 @@ public class DisplayListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_list);
 
-        //if (file != null) {
+        file.readFromFile(this);
 
-            file.readFromFile(this);
+        allLists = file.getAllLists();
 
-            allLists = file.RecupAllLists();
+        if (allLists.countLists() == 0) {
+            return;
+        }
 
+        for (int i = 0; i < allLists.countLists(); i++) {
+            String name = allLists.lists.get(i).getName();
+            choices.add(name);
+        }
 
-            for (int i = 0; i < allLists.countLists(); i++) {
-                String name = allLists.lists.get(i).getName();
-                choices.add(name);
+        spinner = findViewById(R.id.allLists);
+        adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.choices);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        valueSpinner = (String) spinner.getItemAtPosition(spinner.getSelectedItemPosition());
+
+        list = allLists.findAList(valueSpinner);
+
+        //Add the words in the arrayList
+        loadWordsAndTranslationsIntoArray();
+
+        listView = (ListView) findViewById(R.id.listWords);
+        CustomAdapter customAdapter = new CustomAdapter(this, words, translations);
+        listView.setAdapter(customAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                listView = findViewById(R.id.listWords);
+
+                valueSpinner = (String) spinner.getItemAtPosition(spinner.getSelectedItemPosition());
+
+                list = allLists.findAList(valueSpinner);
+
+                //Load the words in the arrayList
+                loadWordsAndTranslationsIntoArray();
+
+                CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words, translations);
+                listView = (ListView) findViewById(R.id.listWords);
+                listView.setAdapter(customAdapter);
             }
 
-            spinner = findViewById(R.id.allLists);
-            adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.choices);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
 
-            valueSpinner = (String) spinner.getItemAtPosition(spinner.getSelectedItemPosition());
-
-            list = allLists.findAList(valueSpinner);
-
-            //Add the words in the arrayList
-            arrayWordTranslation();
-
-            listView = (ListView) findViewById(R.id.listWords);
-            CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words, translations);
-            listView.setAdapter(customAdapter);
-
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
-                    //ListView
-                    listView = (ListView) findViewById(R.id.listWords);
-
-                    valueSpinner = (String) spinner.getItemAtPosition(spinner.getSelectedItemPosition());
-
-                    list = allLists.findAList(valueSpinner);
-
-                    //Add the words in the arrayList
-                    arrayWordTranslation();
-
-                    CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words, translations);
-                    listView = (ListView) findViewById(R.id.listWords);
-                    listView.setAdapter(customAdapter);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    // your code here
-                }
-
-            });
+        });
     }
 
-    public void arrayWordTranslation() {
+    /**
+     *  Loads the words and the translation in an array for the customAdapter
+     */
+    public void loadWordsAndTranslationsIntoArray() {
         words = new ArrayList<>();
         translations = new ArrayList<>();
         for (int i = 0; i < list.numberOfWords(); i++) {

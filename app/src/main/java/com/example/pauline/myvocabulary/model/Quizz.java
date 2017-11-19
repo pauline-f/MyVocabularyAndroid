@@ -1,4 +1,4 @@
-package com.example.pauline.myvocabulary;
+package com.example.pauline.myvocabulary.model;
 
 /**
  * Created by pauline on 16/11/2017.

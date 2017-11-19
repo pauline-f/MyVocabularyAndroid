@@ -1,18 +1,17 @@
 package com.example.pauline.myvocabulary;
 
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.example.pauline.myvocabulary.model.AllLists;
+import com.example.pauline.myvocabulary.model.ListWord;
+import com.example.pauline.myvocabulary.model.Word;
+
 import java.util.Vector;
 
 public class AddWordActivity extends AppCompatActivity {
@@ -21,24 +20,16 @@ public class AddWordActivity extends AppCompatActivity {
     Spinner spinner;
 
     AllLists allLists = new AllLists();
-    ListWord list;
-    FileClass file = new FileClass();
+    FileManager file = new FileManager();
     Vector choices = new Vector<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /////
-        //AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        //alert.setMessage("Hello");
-        //alert.setCancelable(true);
-        //alert.show();
-        /////
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_word);
         file.readFromFile(this);
 
-        allLists = file.RecupAllLists();
-
+        allLists = file.getAllLists();
 
         for (int i = 0; i < allLists.countLists(); i++) {
             String name = allLists.lists.get(i).getName();
@@ -49,13 +40,9 @@ public class AddWordActivity extends AppCompatActivity {
         adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
     }
 
-
     public void addList(View view) {
-
-
         EditText input = findViewById(R.id.listName);
         String name = input.getText().toString().toLowerCase().trim();
 
@@ -89,7 +76,6 @@ public class AddWordActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), valueSpinner, Toast.LENGTH_SHORT).show();
 
-
             ListWord listWord = allLists.findAList(valueSpinner);
 
             if (listWord.findWord(inputW)) {
@@ -99,7 +85,7 @@ public class AddWordActivity extends AppCompatActivity {
                 inputTranslation.setText("");
             }
             else {
-                Word word = new Word(inputW, inputT, 0, 0);
+                Word word = new Word(inputW, inputT);
                 listWord.addWord(word);
 
                 String saveData = valueSpinner + ";" + inputW + ";" + inputT;

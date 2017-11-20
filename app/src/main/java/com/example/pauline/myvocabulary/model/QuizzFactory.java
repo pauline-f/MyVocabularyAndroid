@@ -1,15 +1,11 @@
 package com.example.pauline.myvocabulary.model;
 
-/**
- * Created by pauline on 16/11/2017.
- */
-
 public class QuizzFactory {
     public static Quizz getQuizz(String input, ListWord list) {
         switch (input) {
-            case "QuizzWordTranslation":
+            case "Word - Translation":
                 return new QuizzWordTranslation(list);
-            case "QuizzTranslationWord":
+            case "Translation - Word":
                 return new QuizzTranslationWord(list);
         }
         throw new IllegalArgumentException("This quizz doesn't exist!");

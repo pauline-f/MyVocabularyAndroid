@@ -30,6 +30,15 @@ public class DisplayListActivity extends AppCompatActivity {
     ArrayList<String> words;
     ArrayList<String> translations;
 
+
+    /**
+     *  Displays all the lists of word in the spinner.
+     *  Based on the value of the spinner, the lists of words is displayed (the word and the
+     *  translation are displayed).
+     *  When the user selects a new list of words with the spinner, the list of words based on the
+     *  new list is displayed.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

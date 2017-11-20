@@ -1,10 +1,6 @@
 package com.example.pauline.myvocabulary.model;
 
 /**
- * Created by pauline on 16/11/2017.
- */
-
-/**
  *  This abstract class allows to have methods about quizz: display a word, check the answer, display the good answer and
  */
 public abstract class Quizz {
@@ -29,18 +25,4 @@ public abstract class Quizz {
      * @return
      */
     public abstract String getGoodAnswer();
-
-    /**
-     * Increment count each time the user write the answer
-     */
-    public void incrementCount() {
-        currentWord.incrementCount();
-    }
-
-    /**
-     * Increment score each time the user has a good answer
-     */
-    public void incrementScore() {
-        currentWord.incrementScore();
-    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import android.util.Log;
 
+
 import com.example.pauline.myvocabulary.model.AllLists;
 import com.example.pauline.myvocabulary.model.ListWord;
 import com.example.pauline.myvocabulary.model.Word;
@@ -16,7 +17,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 /**
- * Created by pauline on 07/11/2017.
+ *  Writes and reads the file "app.csv".
+ *  When it writes, it writes the object data in the file.
+ *  When it reads, it reads the file and puts the data in the objects.
  */
 
 public class FileManager {
@@ -108,5 +111,4 @@ public class FileManager {
         list.addWord(newWord);
         allLists.addList(list);
     }
-
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.example.pauline.myvocabulary.AddWordActivity"
-    android:orientation="vertical">
+    tools:context="com.example.pauline.myvocabulary.AddWordActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,6 +14,7 @@
         android:text="My Vocabulary"
         android:textColor="@color/colorPrimary"
         android:textSize="32sp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,4 +92,4 @@
         android:onClick="saveWord"
         android:text="Save word" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

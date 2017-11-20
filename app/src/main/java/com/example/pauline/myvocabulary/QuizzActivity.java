@@ -28,7 +28,7 @@ public class QuizzActivity extends AppCompatActivity {
     AllLists allLists = new AllLists();
     FileManager file = new FileManager();
     Vector choices = new Vector<String>();
-    String[] quizzes = {"QuizzWordTranslation", "QuizzTranslationWord"};
+    String[] quizzes = {"Word - Translation", "Translation - Word"};
     Quizz quizz;
 
     /**
@@ -109,6 +109,10 @@ public class QuizzActivity extends AppCompatActivity {
         startQuizz(quizz);
     }
 
+    /**
+     *  Display an alert message.
+     * @param message
+     */
     public void displayAlert(String message) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage(message);

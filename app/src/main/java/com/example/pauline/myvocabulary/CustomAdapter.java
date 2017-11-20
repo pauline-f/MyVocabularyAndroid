@@ -10,11 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by pauline on 14/11/2017.
- */
-
-/**
- *  Allows to have 2 columns in the listView to display the word and the translation
+ *  Custom adapter with 2 columns to display the word and the translation.
  */
 
 class CustomAdapter extends BaseAdapter {

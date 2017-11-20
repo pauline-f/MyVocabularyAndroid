@@ -1,9 +1,5 @@
 package com.example.pauline.myvocabulary.model;
 
-/**
- * Created by pauline on 16/11/2017.
- */
-
 import java.util.Random;
 
 public class QuizzWordTranslation extends Quizz {

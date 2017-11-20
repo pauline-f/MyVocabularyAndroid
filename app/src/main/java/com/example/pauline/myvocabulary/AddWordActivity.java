@@ -23,6 +23,10 @@ public class AddWordActivity extends AppCompatActivity {
     FileManager file = new FileManager();
     Vector choices = new Vector<String>();
 
+    /**
+     *  Reads the csv file and displays in the spinner the names of all the lists.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,10 @@ public class AddWordActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
+    /**
+     *  Adds the new list and adds the value in the spinner.
+     * @param view
+     */
     public void addList(View view) {
         EditText input = findViewById(R.id.listName);
         String name = input.getText().toString().toLowerCase().trim();
@@ -60,6 +68,10 @@ public class AddWordActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Saves the word and the translation and writes the new word in the csv file.
+     * @param view
+     */
     public void saveWord(View view) {
         EditText inputWord = findViewById(R.id.word);
         EditText inputTranslation = findViewById(R.id.translation);
@@ -95,7 +107,7 @@ public class AddWordActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "New word: " + inputW, Toast.LENGTH_SHORT).show();
 
-                //Initialisation EditText
+                //Initialization EditText
                 inputWord.setText("");
                 inputTranslation.setText("");
             }

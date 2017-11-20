@@ -1,9 +1,6 @@
 package com.example.pauline.myvocabulary.model;
 
 import java.util.ArrayList;
-/**
- * Created by pauline on 06/11/2017.
- */
 
 /**
  *  This class contains all the lists of words

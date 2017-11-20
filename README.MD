@@ -6,7 +6,7 @@ The user can also do a quizz. The program displays a word and the user writes th
 
 There is a version of this application with command line and another version on Android.
 
-Features available on command line version: 
+Features available on [command line version](https://github.com/pauline-f/MyVocabulary):
 - Create lists
 - Add words
 - Display all the lists
